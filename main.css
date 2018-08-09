@@ -1,0 +1,45 @@
+:root {
+	--spinner-width: 300px;
+}
+
+.spinner {
+	border: 1px solid #c66;
+	min-height: 100px;
+	width: var(--spinner-width);
+	perspective: 600px;
+	perspective-origin: 50% -0px;
+
+	/* TEMP */
+	margin: 100px auto 0;
+	/* transition-duration: 10s; */
+	/* transition-property: transform; */
+	/* transform: rotateX(1turn); */
+}
+
+.spinner-list-container {
+	position: absolute;
+	top: 50%;
+}
+
+.spinner-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+/* 	transform: scale(1.5) translate3d(50px, 0px, 100px) rotateY(70deg); */
+	transform-style: preserve-3d;
+	transform-origin: 0 0;
+}
+
+.spinner-item {
+	background-color: rgba(200, 255, 200, 0.9);
+/* 	border: 1px solid #6c6; */
+	box-sizing: border-box;
+	padding: 0.25em;
+	position: absolute;
+	width: var(--spinner-width);
+}
+
+.spinner-item.disabled {
+	background-color: lightgrey;
+}
