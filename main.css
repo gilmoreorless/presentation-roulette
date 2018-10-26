@@ -6,40 +6,100 @@
 	border: 1px solid #c66;
 	min-height: 100px;
 	width: var(--spinner-width);
-	perspective: 600px;
-	perspective-origin: 50% -0px;
+	perspective: 500px;
+/* 	perspective-origin: 50% -0px; */
 
 	/* TEMP */
 	margin: 100px auto 0;
-	/* transition-duration: 10s; */
-	/* transition-property: transform; */
-	/* transform: rotateX(1turn); */
 }
 
-.spinner-list-container {
+.spinner__list-container {
 	position: absolute;
 	top: 50%;
 }
 
-.spinner-list {
+.spinner__list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	position: relative;
-/* 	transform: scale(1.5) translate3d(50px, 0px, 100px) rotateY(70deg); */
+	/* transform: scale(1.5) translate3d(50px, 0px, 100px) rotateY(70deg); */
 	transform-style: preserve-3d;
 	transform-origin: 0 0;
 }
 
-.spinner-item {
+.spinner__item {
 	background-color: rgba(200, 255, 200, 0.9);
 /* 	border: 1px solid #6c6; */
 	box-sizing: border-box;
 	padding: 0.25em;
 	position: absolute;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	width: var(--spinner-width);
 }
 
-.spinner-item.disabled {
+.spinner__item.disabled {
 	background-color: lightgrey;
+}
+
+
+/*** THEME: SydCSS ***/
+
+.spinner--theme-sydcss {
+	border: none;
+	font-size: 2em;
+	font-family: 'Fira Sans';
+	--spinner-width: 350px;
+}
+
+.spinner--theme-sydcss .spinner__item {
+	background-color: orange;
+	background-image: linear-gradient(to bottom, transparent, rgba(255,0,0,0.1));
+	padding: 0.5em 0.75em;
+}
+
+.spinner--theme-sydcss .spinner__item.disabled {
+/* 	background-color: darkorange; */
+	text-decoration: line-through;
+}
+
+.spinner--theme-sydcss .spinner__overlay {
+	position: absolute;
+	pointer-events: none;
+	width: 100%;
+	height: 180px;
+	top: 50%;
+	transform: translateY(-50%) translateZ(100px);
+
+/* 	background: darkcyan; */
+	--cf-bg: white;
+	--cf-bg2: pink;
+	--cf-dark: rgba(0, 0, 0, 0.6);
+	--cf-light: rgba(0, 0, 0, 0.2);
+	--cf-clear: rgba(0, 0, 0, 0);
+	--cf-clear2: red;
+	background-image:
+		radial-gradient(at 100% 50%,
+			var(--cf-clear) 65%,
+			var(--cf-bg) 67%),
+		radial-gradient(at 0% 50%,
+			var(--cf-clear) 65%,
+			var(--cf-bg) 67%),
+		linear-gradient(to bottom,
+			var(--cf-bg) 7%,
+			var(--cf-dark) 0,
+			var(--cf-light) 20%,
+			var(--cf-clear) 40% 60%,
+			var(--cf-light) 80%,
+			var(--cf-dark) 93%,
+			var(--cf-bg) 0);
+	background-size: 10% 110%, 10% 110%, 100% 100%;
+	background-position: 0 50%, 100% 50%, 50% 50%;
+	background-repeat: no-repeat;
+/* 	opacity: 0.5; */
+}
+
+.spinner--theme-sydcss {
+	clip-path: ellipse(58% 230%);
 }
