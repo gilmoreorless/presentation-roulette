@@ -7,7 +7,7 @@
 	min-height: 100px;
 	width: var(--spinner-width);
 	perspective: 500px;
-/* 	perspective-origin: 50% -0px; */
+	/* 	perspective-origin: 50% -0px; */
 
 	/* TEMP */
 	margin: 100px auto 0;
@@ -80,12 +80,12 @@
 	--cf-clear: rgba(0, 0, 0, 0);
 	--cf-clear2: red;
 	background-image:
-		radial-gradient(at 100% 50%,
+/* 		radial-gradient(at 100% 50%,
 			var(--cf-clear) 65%,
 			var(--cf-bg) 67%),
 		radial-gradient(at 0% 50%,
 			var(--cf-clear) 65%,
-			var(--cf-bg) 67%),
+			var(--cf-bg) 67%), */
 		linear-gradient(to bottom,
 			var(--cf-bg) 7%,
 			var(--cf-dark) 0,
@@ -94,8 +94,8 @@
 			var(--cf-light) 80%,
 			var(--cf-dark) 93%,
 			var(--cf-bg) 0);
-	background-size: 10% 110%, 10% 110%, 100% 100%;
-	background-position: 0 50%, 100% 50%, 50% 50%;
+/* 	background-size: 10% 110%, 10% 110%, 100% 100%; */
+/* 	background-position: 0 50%, 100% 50%, 50% 50%; */
 	background-repeat: no-repeat;
 /* 	opacity: 0.5; */
 }
