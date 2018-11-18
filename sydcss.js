@@ -117,12 +117,16 @@ class Spinner {
 
 const spinnerTopic = new Spinner('#spinner-topic', topics);
 
+let lastSelectedIndex;
+
 document.getElementById('select-topic').addEventListener('click', () => {
 	const chooseItem = (spinner, item) => {
 		const idx = spinner.items.indexOf(item);
-		spinner.spinTo(idx).then(anim => {
-			spinner.setDisabled(idx);
-		});
+		if (lastSelectedIndex) {
+			spinner.setDisabled(lastSelectedIndex);
+		}
+		spinner.spinTo(idx);
+		lastSelectedIndex = idx;
 	}
 
 	const topic = selectTopic();

@@ -1,16 +1,43 @@
 :root {
 	--spinner-width: 300px;
+	--spinner-height: 100px;
+
+	--colour-background: hsla(18, 97%, 55%, 1);
+	--colour-foreground: white;
+}
+
+html {
+	font-family: 'Gill Sans';
+	font-size: 125%; /* 20px */
+}
+
+body {
+	background-color: var(--colour-background);
+}
+
+header {
+	color: var(--colour-foreground);
+	text-align: center;
+	text-transform: uppercase;
+}
+
+h1 {
+	font-family: 'Monoton';
+	font-size: 2rem;
+	font-weight: normal;
+	margin-bottom: 0;
+}
+
+h2 {
+	font-size: 1rem;
+	margin-top: 0.5em;
+/* 	font-weight: normal; */
 }
 
 .spinner {
-	border: 1px solid #c66;
-	min-height: 100px;
+	min-height: var(--spinner-height);
 	width: var(--spinner-width);
 	perspective: 500px;
-/* 		perspective-origin: 50% -0px; */
-
-	/* TEMP */
-	margin: 100px auto 0;
 }
 
 .spinner__list-container {
@@ -28,8 +55,6 @@
 }
 
 .spinner__item {
-	background-color: rgba(200, 255, 200, 0.9);
-/* 	border: 1px solid #6c6; */
 	box-sizing: border-box;
 	padding: 0.25em;
 	position: absolute;
@@ -38,18 +63,20 @@
 	width: var(--spinner-width);
 }
 
-.spinner__item.disabled {
-	background-color: lightgrey;
-}
-
 
 /*** THEME: SydCSS ***/
 
 .spinner--theme-sydcss {
+	--spinner-width: 400px;
+
 	border: none;
-	font-size: 2em;
-	font-family: 'Fira Sans';
-	--spinner-width: 350px;
+	font-size: 1.65em;
+/* 	font-family: 'Fira Sans'; */
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .spinner--theme-sydcss .spinner__item {
@@ -71,7 +98,7 @@
 	top: 50%;
 	transform: translateY(-50%) translateZ(100px);
 
-	--cf-bg: white;
+	--cf-bg: var(--colour-background);
 	--cf-dark: rgba(0, 0, 0, 0.6);
 	--cf-light: rgba(0, 0, 0, 0.2);
 	--cf-clear: rgba(0, 0, 0, 0);
@@ -89,4 +116,21 @@
 
 .spinner--theme-sydcss {
 	clip-path: ellipse(58% 230%);
+}
+
+
+/*** THEME: Debug ***/
+
+.spinner--theme-debug {
+	border: 1px solid #c66;
+	margin: 100px auto 0;
+}
+
+.spinner--theme-debug .spinner__item {
+	background-color: rgba(200, 255, 200, 0.9);
+	border: 1px solid #6c6;
+}
+
+.spinner--theme-debug .spinner__item.disabled {
+	background-color: lightgrey;
 }
