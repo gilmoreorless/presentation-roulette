@@ -2,7 +2,8 @@
 	--spinner-width: 300px;
 	--spinner-height: 100px;
 
-	--colour-background: hsla(18, 97%, 55%, 1);
+/* 	--colour-background: hsla(18, 97%, 55%, 1); */
+	--colour-background: hsl(18, 97%, 5%);
 	--colour-foreground: white;
 }
 
@@ -108,13 +109,13 @@ h2 {
 	--hue: 0;
 
 	background-image: radial-gradient(at 48% 48%, hsl(var(--hue),100%,70%), hsl(var(--hue),100%,50%) 55%, hsl(var(--hue),100%,0%));
-	box-shadow: 1px 3px 10px 2px rgba(0,0,0,0.3);
+	box-shadow: 1px 3px 10px 2px rgba(128,128,128,0.3);
 	font-size: 2em;
 }
 
 .big-button--theme-sydcss:focus {
 	outline: none;
-	border: 1px solid black;
+	border: 1px solid hsl(18, 97%, 50%);
 }
 
 .big-button--theme-sydcss:active {
@@ -136,18 +137,14 @@ h2 {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	clip-path: ellipse(58% 230%);
 }
 
 .spinner--theme-sydcss .spinner__item {
-	background-color: orange;
-	background-image: linear-gradient(to bottom, transparent, rgba(255,0,0,0.1));
-	color: #000;
+	background-color: hsl(18, 97%, 60%, 1);
+	background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.05));
+	color: hsla(198, 100%, 95%, 1);
 	padding: 0.5em 0.75em;
-}
-
-.spinner--theme-sydcss .spinner__item.disabled {
-/* 	background-color: darkorange; */
-	text-decoration: line-through;
 }
 
 .spinner--theme-sydcss .spinner__overlay {

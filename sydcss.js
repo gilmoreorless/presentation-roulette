@@ -1,15 +1,31 @@
-/*** BASIC SELECTION ***/
+/*** CONFIG ***/
 
 const topics = [
 	'Grid', 'Flexbox', 'Utility CSS', 'Animations', 'Custom Properties (variables)',
 	'Theming', 'Gradients', 'CSS-in-JS', 'Speaker’s choice',
-	// 'SVG', 'Houdini', 'I wish CSS had…',
+// 	'SVG', 'Houdini', 'I wish CSS had…',
 ];
+
+const minSpinDuration = 10000;
+const spinDurationVariance = 2000;
+const constantSpinDuration = topics.length * 1500;
+
+
+/*** BASIC SELECTION ***/
 
 let remainingTopics = new Set(topics);
 
+function randomIndex(collection) {
+	let max = collection.length || collection.size || 0;
+	return Math.floor(Math.random() * max);
+}
+
+function randomItem(collection) {
+	return collection[randomIndex(collection)];
+}
+
 function removeRandomItem(set) {
-	let index = Math.floor(Math.random() * set.size);
+	let index = randomIndex(set);
 	let item = [...set][index];
 	set.delete(item);
 	return item;
@@ -28,9 +44,44 @@ function selectTopic() {
 
 /*** SPINNER ***/
 
+const rotation = (axis, angle) => `rotate${axis.toUpperCase()}(${angle}turn)`;
+
+const spinnerAnimations = [
+	function normal({ node, axis, start, end, duration, itemCount }) {
+		return node.animate(
+			{ transform: [rotation(axis, start), rotation(axis, end)] },
+			{ duration, easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)', fill: 'forwards' }
+		);
+	},
+
+	function halt({ node, axis, start, end, duration, itemCount }) {
+		return node.animate(
+			{ transform: [rotation(axis, start), rotation(axis, end)] },
+			{ duration: 1500, easing: 'cubic-bezier(0, 0, 0.9, 1.15)', fill: 'forwards' }
+		)
+	},
+
+	function oneBack({ node, axis, start, end, duration, itemCount }) {
+		let itemDistance = 1 / itemCount;
+		let overshoot = itemDistance * 0.8;
+		let totalDistance = (end - start) + overshoot * 2;
+		let overshootTiming = (totalDistance - overshoot) / totalDistance;
+		return node.animate(
+			[
+				{ transform: rotation(axis, start), easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)' },
+				{ transform: rotation(axis, end + overshoot), offset: overshootTiming },
+				{ transform: rotation(axis, end) }
+			],
+			{ duration, fill: 'forwards' }
+		)
+	},
+];
+
 class Spinner {
 	constructor(selector, items) {
 		this.root = document.querySelector(selector);
+		this.axis = 'x';
+		this.animationIndex = -1;
 		this.setup(items);
 	}
 
@@ -81,6 +132,13 @@ class Spinner {
 		});
 	}
 
+	nextAnimation() {
+		this.animationIndex = this.animationIndex < spinnerAnimations.length - 1
+			? this.animationIndex + 1
+			: 0;
+		return spinnerAnimations[this.animationIndex];
+	}
+
 	spinTo(idx) {
 		return new Promise(resolve => {
 			const oldItemAngle = this.selectedIndex / this.itemNodes.length;
@@ -90,13 +148,18 @@ class Spinner {
 			if ((turn - oldItemAngle) < minRotations) {
 				turn += 1;
 			}
-			const prop = angle => `rotateX(${angle}turn)`;
-			const duration = 5000 + Math.random() * 2000 - 1000;
+			const variance = Math.random() * spinDurationVariance - spinDurationVariance / 2;
+			const duration = minSpinDuration + variance;
 			
-			let anim = this.listNode.animate(
-				{ 'transform': [prop(oldItemAngle), prop(turn)] },
-				{ duration, easing: 'cubic-bezier(.11,.69,.13,.98)', fill: 'forwards' }
-			);
+			const animFn = this.nextAnimation();
+			let anim = animFn({
+				node: this.listNode,
+				axis: this.axis,
+				start: oldItemAngle,
+				end: turn,
+				duration,
+				itemCount: this.itemNodes.length,
+			});
 			anim.onfinish = () => resolve(anim);
 			this.selectedIndex = idx;
 		});
@@ -105,6 +168,13 @@ class Spinner {
 	spinToRandom() {
 		let idx = Math.floor(Math.random() * this.itemNodes.length);
 		this.spinTo(idx);
+	}
+
+	spinConstantly() {
+		this.listNode.animate(
+			{ transform: [rotation(this.axis, 0), rotation(this.axis, 1)] },
+			{ duration: constantSpinDuration, easing: 'linear', iterations: Infinity }
+		);
 	}
 
 	setDisabled(idx) {
