@@ -38,7 +38,6 @@ h1 {
 h2 {
 	font-size: 1rem;
 	margin-top: 0.5em;
-/* 	font-weight: normal; */
 }
 
 .controls {
@@ -72,15 +71,9 @@ h2 {
 	transform: translate(1px, 2px);
 }
 
-.spinner {
-	min-height: var(--spinner-height);
-	width: var(--spinner-width);
-	perspective: 500px;
-}
-
 .spinner__list-container {
-	position: absolute;
-	top: 50%;
+	perspective: 500px;
+	perspective-origin: calc(var(--spinner-width) / 2) 50%;
 }
 
 .spinner__list {
@@ -89,7 +82,7 @@ h2 {
 	padding: 0;
 	position: relative;
 	transform-style: preserve-3d;
-	transform-origin: 0 0;
+	transform-origin: 50% 0;
 }
 
 .spinner__item {
@@ -128,32 +121,46 @@ h2 {
 
 .spinner--theme-sydcss {
 	--spinner-width: 400px;
+	--spinner-height: 270px;
+	--clip-path-w: calc(var(--spinner-width) * 0.6);
+	--clip-path-h: calc(var(--spinner-height) * 0.9);
 
 	border: none;
 	font-size: 1.65em;
-	/* 	font-family: 'Fira Sans'; */
 	margin: auto;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
-	clip-path: ellipse(58% 230%);
+}
+
+.spinner--theme-sydcss .spinner__list-container {
+	clip-path: ellipse(
+		var(--clip-path-w)
+		var(--clip-path-h)
+		at calc(var(--spinner-width) / 2)
+	);
+	transform: translateX(calc(var(--spinner-width) * -0.5));
+	transform-style: preserve-3d;
 }
 
 .spinner--theme-sydcss .spinner__item {
 	background-color: hsl(18, 97%, 60%, 1);
 	background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.05));
 	color: hsla(198, 100%, 95%, 1);
-	padding: 0.5em 0.75em;
+	padding: 0.5em 0.85em;
 }
 
 .spinner--theme-sydcss .spinner__overlay {
 	position: absolute;
 	pointer-events: none;
-	width: 100%;
-	height: 180px;
-	top: 50%;
-	transform: translateY(-50%) translateZ(100px);
+	width: calc(var(--spinner-width) * 1.4);
+	height: var(--spinner-height);
+	transform: translate(calc(var(--spinner-width) * -0.7), -50%);
+	clip-path: ellipse(
+		calc(var(--clip-path-w) + 2px)
+		var(--clip-path-h)
+		at calc(var(--spinner-width) / 2 * 1.4)
+	);
 
 	--cf-bg: var(--colour-background);
 	--cf-dark: rgba(0, 0, 0, 0.6);
@@ -167,7 +174,8 @@ h2 {
 			var(--cf-clear) 40% 60%,
 			var(--cf-light) 80%,
 			var(--cf-dark) 93%,
-			var(--cf-bg) 0);
+			var(--cf-bg) 0
+		);
 	background-repeat: no-repeat;
 }
 

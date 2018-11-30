@@ -1,9 +1,9 @@
 /*** CONFIG ***/
 
 const topics = [
-	'Grid', 'Flexbox', 'Utility CSS', 'Animations', 'Custom Properties (variables)',
+	'Grid', 'Utility CSS', 'Animations', 'Custom Properties',
 	'Theming', 'Gradients', 'CSS-in-JS', 'Speaker’s choice',
-// 	'SVG', 'Houdini', 'I wish CSS had…',
+	'SVG', 'Houdini', 'I wish CSS had…',
 ];
 
 const minSpinDuration = 10000;
