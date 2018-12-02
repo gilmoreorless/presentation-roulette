@@ -151,6 +151,7 @@ class Spinner {
 			const variance = Math.random() * spinDurationVariance - spinDurationVariance / 2;
 			const duration = minSpinDuration + variance;
 			
+			delete this.root.dataset.hasArrow;
 			const animFn = this.nextAnimation();
 			let anim = animFn({
 				node: this.listNode,
@@ -160,7 +161,10 @@ class Spinner {
 				duration,
 				itemCount: this.itemNodes.length,
 			});
-			anim.onfinish = () => resolve(anim);
+			anim.onfinish = () => {
+				this.root.dataset.hasArrow = true;
+				resolve(anim);
+			}
 			this.selectedIndex = idx;
 		});
 	}
@@ -171,6 +175,7 @@ class Spinner {
 	}
 
 	spinConstantly() {
+		delete this.root.dataset.hasArrow; 
 		this.listNode.animate(
 			{ transform: [rotation(this.axis, 0), rotation(this.axis, 1)] },
 			{ duration: constantSpinDuration, easing: 'linear', iterations: Infinity }

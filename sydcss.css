@@ -94,6 +94,11 @@ h2 {
 	width: var(--spinner-width);
 }
 
+.spinner__arrow {
+	opacity: 0;
+	transition: opacity 0.1s;
+}
+
 
 /*** THEME: SydCSS ***/
 
@@ -179,8 +184,22 @@ h2 {
 	background-repeat: no-repeat;
 }
 
-.spinner--theme-sydcss {
-	clip-path: ellipse(58% 230%);
+.spinner--theme-sydcss .spinner__arrow {
+	position: absolute;
+	width: 2em;
+	height: 2em;
+	transform: translate(calc(var(--spinner-width) * 0.65), -50%);
+}
+
+.spinner--theme-sydcss .spinner__arrow--shape {
+	fill: hsl(18, 97%, 70%);
+	stroke: hsl(18, 72%, 55%);
+	stroke-width: 0.5;
+	stroke-linejoin: round;
+}
+
+.spinner--theme-sydcss[data-has-arrow] .spinner__arrow {
+	opacity: 1;
 }
 
 
