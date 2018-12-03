@@ -194,7 +194,7 @@ const spinnerTopic = new Spinner('#spinner-topic', topics);
 
 let lastSelectedIndex;
 
-document.getElementById('select-topic').addEventListener('click', () => {
+function spinToRandomTopic() {
 	const chooseItem = (spinner, item) => {
 		const idx = spinner.items.indexOf(item);
 		if (lastSelectedIndex) {
@@ -207,5 +207,31 @@ document.getElementById('select-topic').addEventListener('click', () => {
 	const topic = selectTopic();
 	if (topic) {
 		chooseItem(spinnerTopic, topic);
+	}
+}
+
+const spinButton = document.getElementById('select-topic');
+spinButton.addEventListener('click', spinToRandomTopic, false);
+
+const keyActions = {
+	' ': 'select',
+	F5: 'select',
+	Enter: 'select',
+	b: 'slowSpin',
+};
+
+document.addEventListener('keydown', (ev) => {
+	console.log(ev.key, keyActions[ev.key]);
+	switch (keyActions[ev.key]) {
+		case 'select':
+			spinButton.classList.add('is-active');
+			setTimeout(() => {
+				spinToRandomTopic();
+				spinButton.classList.remove('is-active');
+			}, 200);
+			break;
+		case 'slowSpin':
+			spinnerTopic.spinConstantly();
+			break;
 	}
 }, false);

@@ -113,10 +113,11 @@ h2 {
 
 .big-button--theme-sydcss:focus {
 	outline: none;
-	border: 1px solid hsl(18, 97%, 50%);
+/* 	border: 1px solid hsl(18, 97%, 50%); */
 }
 
-.big-button--theme-sydcss:active {
+.big-button--theme-sydcss:active,
+.big-button--theme-sydcss.is-active {
 	transform: none;
 	background-image: radial-gradient(at 52% 52%, hsl(var(--hue),100%,70%), hsl(var(--hue),100%,50%) 55%, hsl(var(--hue),100%,0%));
 	box-shadow: inset 1px 3px 10px 2px rgba(0,0,0,0.3);
