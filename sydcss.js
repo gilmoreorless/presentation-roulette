@@ -10,8 +10,18 @@ const minSpinDuration = 10000;
 const spinDurationVariance = 2000;
 const constantSpinDuration = topics.length * 1500;
 
+const effectFiles = {
+// 	intro: 'sounds/intro.mp3',
+	spin: 'sounds/roulette.mp3',
+	ding: 'sounds/chime.mp3',
+};
+
+
+
 
 /*** BASIC SELECTION ***/
+
+
 
 let remainingTopics = new Set(topics);
 
@@ -42,7 +52,11 @@ function selectTopic() {
 }
 
 
+
+
 /*** SPINNER ***/
+
+
 
 const rotation = (axis, angle) => `rotate${axis.toUpperCase()}(${angle}turn)`;
 
@@ -188,7 +202,58 @@ class Spinner {
 }
 
 
+
+
+/*** SOUND EFFECTS ***/
+
+
+
+class SoundEffects {
+	constructor(config) {
+		this.audioContext = null;
+		this.effects = new Map();
+		Object.keys(config).forEach(name => {
+			this.addEffect(name, config[name])
+		});
+	}
+
+	context() {
+		if (!this.audioContext) {
+			this.audioContext = new AudioContext();
+		}
+		return this.audioContext;
+	}
+
+	async addEffect(name, file) {
+		const response = await fetch(file);
+		const audioData = await response.arrayBuffer();
+		const audioBuffer = await this.context().decodeAudioData(audioData);
+		this.effects.set(name, audioBuffer);
+		return audioBuffer;
+	}
+
+	play(name) {
+		if (!this.effects.has(name)) {
+			return false;
+		}
+		
+		const ctx = this.context();
+		const sourceNode = ctx.createBufferSource();
+		sourceNode.buffer = this.effects.get(name);
+		sourceNode.connect(ctx.destination);
+		sourceNode.start();
+		return sourceNode;
+	}
+
+}
+
+const soundEffects = new SoundEffects(effectFiles);
+
+
+
 /*** INTERACTIONS ***/
+
+
 
 const spinnerTopic = new Spinner('#spinner-topic', topics);
 
@@ -200,7 +265,12 @@ function spinToRandomTopic() {
 		if (lastSelectedIndex) {
 			spinner.setDisabled(lastSelectedIndex);
 		}
-		spinner.spinTo(idx);
+		
+		const spinSound = soundEffects.play('spin');
+		spinner.spinTo(idx).then(() => {
+			spinSound.stop();
+			soundEffects.play('ding');
+		});
 		lastSelectedIndex = idx;
 	}
 
@@ -218,10 +288,11 @@ const keyActions = {
 	F5: 'select',
 	Enter: 'select',
 	b: 'slowSpin',
+	ArrowDown: 'slowSpin',
 };
 
 document.addEventListener('keydown', (ev) => {
-	console.log(ev.key, keyActions[ev.key]);
+	console.log('[keydown]', ev.keyCode, ev.key, keyActions[ev.key]);
 	switch (keyActions[ev.key]) {
 		case 'select':
 			spinButton.classList.add('is-active');
