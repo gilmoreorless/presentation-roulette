@@ -25,6 +25,7 @@ const effectFiles = {
 
 
 let remainingTopics = new Set(topics);
+let chosenTopics = [];
 
 function randomIndex(collection) {
 	let max = collection.length || collection.size || 0;
@@ -49,6 +50,7 @@ function selectTopic() {
 	}
 	let topic = removeRandomItem(remainingTopics);
 	console.log('Topic: %s', topic, remainingTopics);
+	chosenTopics.push(topic);
 	return topic;
 }
 
