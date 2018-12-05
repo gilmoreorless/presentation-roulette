@@ -11,9 +11,10 @@ const spinDurationVariance = 2000;
 const constantSpinDuration = topics.length * 1500;
 
 const effectFiles = {
-// 	intro: 'sounds/intro.mp3',
 	spin: 'sounds/roulette.mp3',
+	'spin-reverse': 'sounds/roulette-reverse.mp3',
 	ding: 'sounds/chime.mp3',
+	crash: 'sounds/crash.mp3',
 };
 
 
@@ -60,34 +61,103 @@ function selectTopic() {
 
 const rotation = (axis, angle) => `rotate${axis.toUpperCase()}(${angle}turn)`;
 
-const spinnerAnimations = [
-	function normal({ node, axis, start, end, duration, itemCount }) {
-		return node.animate(
-			{ transform: [rotation(axis, start), rotation(axis, end)] },
-			{ duration, easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)', fill: 'forwards' }
-		);
+const spinnerEffects = [
+	{
+		name: 'normal',
+		start: ({ node, axis, start, end, duration, itemCount }) => {
+			return {
+				animation: node.animate(
+					{ transform: [rotation(axis, start), rotation(axis, end)] },
+					{ duration, easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)', fill: 'forwards' }
+				),
+				sound: soundEffects.play('spin'),
+			};
+		},
+		end: ({ animation, sound, showArrow }) => {
+			sound.stop();
+			showArrow();
+		},
 	},
 
-	function halt({ node, axis, start, end, duration, itemCount }) {
-		return node.animate(
-			{ transform: [rotation(axis, start), rotation(axis, end)] },
-			{ duration: 1500, easing: 'cubic-bezier(0, 0, 0.9, 1.15)', fill: 'forwards' }
-		)
+	{
+		name: 'oneBack',
+		start: ({ node, axis, start, end, duration, itemCount }) => {
+			let itemDistance = 1 / itemCount;
+			let overshoot = itemDistance * 0.8;
+			let totalDistance = (end - start) + overshoot * 2;
+			let overshootTiming = (totalDistance - overshoot) / totalDistance;
+			return {
+				animation: node.animate(
+					[
+						{ transform: rotation(axis, start), easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)' },
+						{ transform: rotation(axis, end + overshoot), offset: overshootTiming },
+						{ transform: rotation(axis, end) }
+					],
+					{ duration, fill: 'forwards' }
+				),
+				sound: soundEffects.play('spin'),
+			};
+		},
+		end: ({ animation, sound, showArrow }) => {
+			sound.stop();
+			showArrow();
+		},
 	},
 
-	function oneBack({ node, axis, start, end, duration, itemCount }) {
-		let itemDistance = 1 / itemCount;
-		let overshoot = itemDistance * 0.8;
-		let totalDistance = (end - start) + overshoot * 2;
-		let overshootTiming = (totalDistance - overshoot) / totalDistance;
-		return node.animate(
-			[
-				{ transform: rotation(axis, start), easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)' },
-				{ transform: rotation(axis, end + overshoot), offset: overshootTiming },
-				{ transform: rotation(axis, end) }
-			],
-			{ duration, fill: 'forwards' }
-		)
+// 	{
+// 		name: 'halt',
+// 		start: ({ node, axis, start, end, duration, itemCount }) => {
+// 			return {
+// 				animation: node.animate(
+// 					{ transform: [rotation(axis, start), rotation(axis, end)] },
+// 					{ duration: 1500, easing: 'cubic-bezier(0, 0, 0.9, 1.15)', fill: 'forwards' }
+// 				),
+// 				sound: soundEffects.play('spin'),
+// 			};
+// 		},
+// 		end: ({ animation, sound, showArrow }) => {
+// 			sound.stop();
+// 			showArrow();
+// 		},
+// 	},
+
+	{
+		name: 'halt-crash',
+		start: ({ node, axis, start, end, duration, itemCount }) => {
+			return {
+				animation: node.animate(
+					{ transform: [rotation(axis, start), rotation(axis, end)] },
+					{ duration: duration, easing: 'cubic-bezier(0.69, 0.11, 0.98, 0.13)', fill: 'forwards' }
+				),
+				sound: soundEffects.play('spin-reverse'),
+			};
+		},
+		end: ({ animation, sound, showArrow, rootNode, itemNodes }) => {
+			sound.stop();
+			const crashDuration = 1500;
+			rootNode.dataset.hasCrashed = true;
+			itemNodes.forEach(node => {
+				node.animate(
+					{ transform: [
+						node.style.transform,
+						`${node.style.transform}
+						rotateX(${Math.random()}turn)
+						rotateY(${Math.random() / 2 - 0.5}turn)
+						rotateZ(${Math.random() / 2 - 0.5}turn)
+						translateZ(2000px)`
+					] },
+					{ duration: crashDuration, easing: 'cubic-bezier(0.2, 0.38, 0.85, 1.23)', fill: 'forwards' }
+				);
+			});
+
+			setTimeout(() => {
+				rootNode.style.transform = 'rotateZ(-10deg)';
+			}, 1000);
+			const crash = soundEffects.play('crash');
+			crash.onended = () => {
+				setTimeout(showArrow, 1000);
+			}
+		},
 	},
 ];
 
@@ -95,7 +165,7 @@ class Spinner {
 	constructor(selector, items) {
 		this.root = document.querySelector(selector);
 		this.axis = 'x';
-		this.animationIndex = -1;
+		this.effectIndex = -1;
 		this.setup(items);
 	}
 
@@ -150,11 +220,11 @@ class Spinner {
 		});
 	}
 
-	nextAnimation() {
-		this.animationIndex = this.animationIndex < spinnerAnimations.length - 1
-			? this.animationIndex + 1
+	nextEffect() {
+		this.effectIndex = this.effectIndex < spinnerEffects.length - 1
+			? this.effectIndex + 1
 			: 0;
-		return spinnerAnimations[this.animationIndex];
+		return spinnerEffects[this.effectIndex];
 	}
 
 	spinTo(idx) {
@@ -170,8 +240,8 @@ class Spinner {
 			const duration = minSpinDuration + variance;
 			
 			delete this.root.dataset.hasArrow;
-			const animFn = this.nextAnimation();
-			let anim = animFn({
+			const effectFn = this.nextEffect();
+			let effect = effectFn.start({
 				node: this.listNode,
 				axis: this.axis,
 				start: oldItemAngle,
@@ -179,9 +249,15 @@ class Spinner {
 				duration,
 				itemCount: this.itemNodes.length,
 			});
-			anim.onfinish = () => {
-				this.root.dataset.hasArrow = true;
-				resolve(anim);
+			effect.animation.onfinish = () => {
+				effectFn.end({
+					animation: effect.animation,
+					sound: effect.sound,
+					showArrow: this.showArrow,
+					rootNode: this.root,
+					itemNodes: this.itemNodes.filter((_, itemIdx) => itemIdx !== idx),
+				});
+				resolve(effect);
 			}
 			this.selectedIndex = idx;
 		});
@@ -202,6 +278,15 @@ class Spinner {
 
 	setDisabled(idx) {
 		this.itemNodes[idx].classList.add('disabled');
+	}
+
+	showArrow = () => {
+		soundEffects.play('ding');
+		this.root.dataset.hasArrow = true;
+	}
+
+	hideArrow() {
+		this.root.dataset.hasArrow = false;
 	}
 }
 
@@ -270,11 +355,7 @@ function spinToRandomTopic() {
 			spinner.setDisabled(lastSelectedIndex);
 		}
 		
-		const spinSound = soundEffects.play('spin');
-		spinner.spinTo(idx).then(() => {
-			spinSound.stop();
-			soundEffects.play('ding');
-		});
+		spinner.spinTo(idx);
 		lastSelectedIndex = idx;
 	}
 
