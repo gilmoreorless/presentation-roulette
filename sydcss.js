@@ -115,6 +115,10 @@ class Spinner {
 		overlayNode.className = 'spinner__overlay';
 		this.root.appendChild(overlayNode);
 
+		let borderNode = document.createElement('div');
+		borderNode.className = 'spinner__border';
+		this.root.appendChild(borderNode);
+
 		// Must be called after the elements appear in the DOM, to correctly calculate height
 		this.transformItems();
 	}

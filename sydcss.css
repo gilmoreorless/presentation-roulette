@@ -2,7 +2,6 @@
 	--spinner-width: 300px;
 	--spinner-height: 100px;
 
-/* 	--colour-background: hsla(18, 97%, 55%, 1); */
 	--colour-background: hsl(18, 97%, 5%);
 	--colour-foreground: white;
 }
@@ -109,6 +108,7 @@ h2 {
 	background-image: radial-gradient(at 48% 48%, hsl(var(--hue),100%,70%), hsl(var(--hue),100%,50%) 55%, hsl(var(--hue),100%,0%));
 	box-shadow: 1px 3px 10px 2px rgba(128,128,128,0.3);
 	font-size: 2em;
+	margin-bottom: 1em;
 }
 
 .big-button--theme-sydcss:focus {
@@ -130,13 +130,19 @@ h2 {
 	--spinner-height: 270px;
 	--clip-path-w: calc(var(--spinner-width) * 0.6);
 	--clip-path-h: calc(var(--spinner-height) * 0.9);
+	--colour-border: hsl(13, 77%, 45%);
 
 	border: none;
 	font-size: 1.65em;
+	line-height: 1.1;
 	margin: auto;
 	position: absolute;
 	top: 50%;
 	left: 50%;
+
+	transform-origin: calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * -0.5);
+	transition: transform 2s cubic-bezier(0,0.3,0.3,1.5);
+/* 	transform: rotateZ(-10deg); */
 }
 
 .spinner--theme-sydcss .spinner__list-container {
@@ -150,10 +156,21 @@ h2 {
 }
 
 .spinner--theme-sydcss .spinner__item {
-	background-color: hsl(18, 97%, 60%, 1);
-	background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.05));
+	background-color: #FB4C32;
 	color: hsla(198, 100%, 95%, 1);
 	padding: 0.5em 0.85em;
+}
+
+.spinner--theme-sydcss .spinner__item:nth-child(4n+2) {
+	background-color: #1FC754;
+}
+
+.spinner--theme-sydcss .spinner__item:nth-child(4n+3) {
+	background-color: #E41481;
+}
+
+.spinner--theme-sydcss .spinner__item:nth-child(4n+4) {
+	background-color: #9B1FD7;
 }
 
 .spinner--theme-sydcss .spinner__overlay {
@@ -161,28 +178,84 @@ h2 {
 	pointer-events: none;
 	width: calc(var(--spinner-width) * 1.4);
 	height: var(--spinner-height);
-	transform: translate(calc(var(--spinner-width) * -0.7), -50%);
+	transform: translate(-50%, -50%);
 	clip-path: ellipse(
 		calc(var(--clip-path-w) + 2px)
 		var(--clip-path-h)
 		at calc(var(--spinner-width) / 2 * 1.4)
 	);
 
-	--cf-bg: var(--colour-background);
-	--cf-dark: rgba(0, 0, 0, 0.6);
-	--cf-light: rgba(0, 0, 0, 0.2);
+	--cf-bg1: var(--colour-background);
+	--cf-bg2: var(--colour-border);
+	--cf-dark: rgba(0, 0, 0, 0.8);
+	--cf-light: rgba(0, 0, 0, 0.3);
 	--cf-clear: rgba(0, 0, 0, 0);
 	background-image:
 		linear-gradient(to bottom,
-			var(--cf-bg) 7%,
+			var(--cf-bg2) 4%,
+			var(--cf-bg1) 0 7%,
 			var(--cf-dark) 0,
 			var(--cf-light) 20%,
 			var(--cf-clear) 40% 60%,
 			var(--cf-light) 80%,
 			var(--cf-dark) 93%,
-			var(--cf-bg) 0
+			var(--cf-bg1) 0 96%,
+			var(--cf-bg2) 0
 		);
 	background-repeat: no-repeat;
+}
+
+.spinner--theme-sydcss .spinner__border {
+	position: absolute;
+	pointer-events: none;
+	width: calc(var(--spinner-width) * 1.4);
+	height: calc(var(--spinner-height) * 1.2);
+	transform: translate(-50%, -50%);
+	background-color: var(--colour-border);
+	background-image:
+		radial-gradient(
+			calc(var(--spinner-width) * 0.19) calc(var(--spinner-height) * 0.5)
+			at 18% 50%,
+			rgba(0,0,0,0.8) 60%, transparent
+		),
+		radial-gradient(
+			calc(var(--spinner-width) * 0.19) calc(var(--spinner-height) * 0.5)
+			at 82% 50%,
+			rgba(0,0,0,0.8) 60%, transparent
+		);
+	box-shadow: 0 0 20px 3px var(--colour-border);
+	border-radius: 0.25em;
+	box-sizing: border-box;
+	z-index: -1;
+}
+
+.spinner--theme-sydcss .spinner__border::before {
+	--stud-size: 0.25em;
+	--stud-dark: hsl(18, 80%, 15%);
+	--stud-light: hsl(18, 80%, 20%);
+	--stud-spread: 5px;
+
+	content: '';
+	width: var(--stud-size);
+	height: var(--stud-size);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	box-shadow:
+		/* top left */
+		calc(var(--spinner-width) * -0.64) calc(var(--spinner-height) * -0.5) var(--stud-light),
+		calc(var(--spinner-width) * -0.64) calc(var(--spinner-height) * -0.5) var(--stud-spread) var(--stud-spread) var(--stud-dark),
+		/* top right */
+		calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * -0.5) var(--stud-light),
+		calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * -0.5) var(--stud-spread) var(--stud-spread) var(--stud-dark),
+		/* bottom left */
+		calc(var(--spinner-width) * -0.64) calc(var(--spinner-height) * 0.5) var(--stud-light),
+		calc(var(--spinner-width) * -0.64) calc(var(--spinner-height) * 0.5) var(--stud-spread) var(--stud-spread) var(--stud-dark),
+		/* bottom right */
+		calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * 0.5) var(--stud-light),
+		calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * 0.5) var(--stud-spread) var(--stud-spread) var(--stud-dark);
 }
 
 .spinner--theme-sydcss .spinner__arrow {
@@ -193,8 +266,8 @@ h2 {
 }
 
 .spinner--theme-sydcss .spinner__arrow--shape {
-	fill: hsl(18, 97%, 70%);
-	stroke: hsl(18, 72%, 55%);
+	fill: hsl(48, 97%, 60%);
+	stroke: hsl(28, 72%, 55%);
 	stroke-width: 0.5;
 	stroke-linejoin: round;
 }
