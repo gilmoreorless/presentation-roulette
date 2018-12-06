@@ -200,13 +200,16 @@ h2 {
 	background-image:
 		linear-gradient(to bottom,
 			var(--cf-bg2) 7%,
-			var(--cf-bg1) 0 8%,
+			var(--cf-bg1) 0,
+			var(--cf-bg1) 8%,
 			var(--cf-dark) 0,
 			var(--cf-light) 20%,
-			var(--cf-clear) 40% 60%,
+			var(--cf-clear) 40%,
+			var(--cf-clear) 60%,
 			var(--cf-light) 80%,
 			var(--cf-dark) 92%,
-			var(--cf-bg1) 0 93%,
+			var(--cf-bg1) 0,
+			var(--cf-bg1) 93%,
 			var(--cf-bg2) 0
 		);
 	background-repeat: no-repeat;
