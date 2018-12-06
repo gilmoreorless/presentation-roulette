@@ -24,6 +24,14 @@ This code is mainly provided as a reference for those who want to see how it was
 
 The JS code did start off quite small, but grew and grew as the scope crept ever onwards. The git history shows the evolution of the idea over the weeks leading up to the event.
 
+### For those who were there on the night
+
+The animations were rigged to happen in a specific order, but the talk selections were not.
+
+The code to select a topic is most definitely random choice — it’s literally [Math.random()](https://github.com/gilmoreorless/presentation-roulette/blob/5a36c56d9780d538b4531d2c6476158c52cec085/sydcss.js#L40).
+
+It was pure coincidence that 2 out of 3 presenters got the topic they wanted.
+
 ## Credits
 
 All code is © Gilmore Davidson under the [MIT licence](LICENSE).
