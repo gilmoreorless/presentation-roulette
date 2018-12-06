@@ -1,9 +1,17 @@
 /*** CONFIG ***/
 
 const topics = [
-	'Grid', 'Utility CSS', 'Animations', 'Custom Properties',
-	'Theming', 'Gradients', 'CSS-in-JS', 'Speaker’s choice',
-	'SVG', 'Houdini', 'I wish CSS had…',
+	'Accessibility',
+	'IE was awesome because…',
+	'Custom Properties',
+	'⚡️ Speaker’s choice ✨',
+	'3 things you didn’t know about…',
+	'Stacking Context',
+	'Who needs CSS anyway?',
+	'I wish CSS had…',
+	'Houdini',
+	'CSS in email',
+	'Performance',
 ];
 
 const minSpinDuration = 10000;
@@ -255,7 +263,7 @@ class Spinner {
 				effectFn.end({
 					animation: effect.animation,
 					sound: effect.sound,
-					showArrow: this.showArrow,
+					showArrow: this.showArrow.bind(this),
 					rootNode: this.root,
 					itemNodes: this.itemNodes.filter((_, itemIdx) => itemIdx !== idx),
 				});
@@ -282,7 +290,7 @@ class Spinner {
 		this.itemNodes[idx].classList.add('disabled');
 	}
 
-	showArrow = () => {
+	showArrow() {
 		soundEffects.play('ding');
 		this.root.dataset.hasArrow = true;
 	}

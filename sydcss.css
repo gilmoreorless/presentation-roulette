@@ -126,10 +126,10 @@ h2 {
 
 
 .spinner--theme-sydcss {
-	--spinner-width: 400px;
+	--spinner-width: 500px;
 	--spinner-height: 270px;
 	--clip-path-w: calc(var(--spinner-width) * 0.6);
-	--clip-path-h: calc(var(--spinner-height) * 0.9);
+	--clip-path-h: calc(var(--spinner-height) * 1);
 	--colour-border: hsl(13, 77%, 45%);
 
 	border: none;
@@ -199,14 +199,14 @@ h2 {
 	--cf-clear: rgba(0, 0, 0, 0);
 	background-image:
 		linear-gradient(to bottom,
-			var(--cf-bg2) 4%,
-			var(--cf-bg1) 0 7%,
+			var(--cf-bg2) 7%,
+			var(--cf-bg1) 0 8%,
 			var(--cf-dark) 0,
 			var(--cf-light) 20%,
 			var(--cf-clear) 40% 60%,
 			var(--cf-light) 80%,
-			var(--cf-dark) 93%,
-			var(--cf-bg1) 0 96%,
+			var(--cf-dark) 92%,
+			var(--cf-bg1) 0 93%,
 			var(--cf-bg2) 0
 		);
 	background-repeat: no-repeat;
