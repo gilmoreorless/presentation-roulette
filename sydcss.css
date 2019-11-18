@@ -9,6 +9,7 @@
 html {
 	font-family: 'Gill Sans';
 	font-size: 125%; /* 20px */
+	overflow: hidden;
 }
 
 body {
@@ -151,7 +152,6 @@ h2 {
 		at calc(var(--spinner-width) / 2)
 	);
 	transform: translateX(calc(var(--spinner-width) * -0.5));
-	transform-style: preserve-3d;
 }
 
 .spinner--theme-sydcss[data-has-crashed] .spinner__list-container {
