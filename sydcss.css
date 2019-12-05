@@ -2,7 +2,8 @@
 	--spinner-width: 300px;
 	--spinner-height: 100px;
 
-	--colour-background: hsl(18, 97%, 5%);
+/* 	--colour-background: hsl(18, 97%, 5%); */
+	--colour-background: black;
 	--colour-foreground: white;
 }
 
@@ -16,10 +17,23 @@ body {
 	background-color: var(--colour-background);
 	box-sizing: border-box;
 	color: var(--colour-foreground);
+	margin: 0;
+}
+
+.main {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
 	margin: 0 1rem;
+}
+
+.main.hidden {
+	opacity: 0;
+}
+
+.main.fade-in {
+	opacity: 1;
+	transition: opacity 3s;
 }
 
 header {
@@ -72,7 +86,7 @@ h2 {
 }
 
 .spinner__list-container {
-	perspective: 500px;
+	perspective: 600px;
 	perspective-origin: calc(var(--spinner-width) / 2) 50%;
 }
 
@@ -105,12 +119,14 @@ h2 {
 .big-button--theme-sydcss {
 	--button-size: 10rem;
 	--hue: 0;
-
 	background-image: radial-gradient(at 48% 48%, hsl(var(--hue),100%,70%), hsl(var(--hue),100%,50%) 55%, hsl(var(--hue),100%,0%));
 	box-shadow: 1px 3px 10px 2px rgba(128,128,128,0.3);
 	font-size: 2em;
 	margin-bottom: 1em;
+	display: none;
 }
+
+button#select-topic {}
 
 .big-button--theme-sydcss:focus {
 	outline: none;
@@ -128,11 +144,10 @@ h2 {
 
 .spinner--theme-sydcss {
 	--spinner-width: 500px;
-	--spinner-height: 270px;
+	--spinner-height: 280px;
 	--clip-path-w: calc(var(--spinner-width) * 0.6);
 	--clip-path-h: calc(var(--spinner-height) * 1);
 	--colour-border: hsl(13, 77%, 45%);
-
 	border: none;
 	font-size: 1.65em;
 	line-height: 1.1;
@@ -140,7 +155,6 @@ h2 {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-
 	transform-origin: calc(var(--spinner-width) * 0.64) calc(var(--spinner-height) * -0.5);
 	transition: transform 0.5s cubic-bezier(0,0.3,0.3,1.5);
 }
@@ -159,21 +173,25 @@ h2 {
 }
 
 .spinner--theme-sydcss .spinner__item {
-	background-color: #FB4C32;
+	background-color: hsla(329, 74%, 45%, 1);
 	color: hsla(198, 100%, 95%, 1);
 	padding: 0.5em 0.85em;
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+2) {
-	background-color: #1FC754;
+	background-color: hsla(139, 63%, 40%, 1);
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+3) {
-	background-color: #E41481;
+	background-color: hsla(8, 76%, 53%, 1);
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+4) {
-	background-color: #9B1FD7;
+	background-color: hsla(280, 65%, 42%, 1);
+}
+
+.spinner--theme-sydcss .spinner__item:nth-child(7n) {
+	background-color: hsla(8, 20%, 14%, 1);
 }
 
 .spinner--theme-sydcss[data-has-crashed] .spinner__item {
@@ -191,11 +209,10 @@ h2 {
 		var(--clip-path-h)
 		at calc(var(--spinner-width) / 2 * 1.4)
 	);
-
 	--cf-bg1: var(--colour-background);
 	--cf-bg2: var(--colour-border);
-	--cf-dark: rgba(0, 0, 0, 0.8);
-	--cf-light: rgba(0, 0, 0, 0.3);
+	--cf-dark: rgba(0, 0, 0, 0.9);
+	--cf-light: rgba(0, 0, 0, 0.4);
 	--cf-clear: rgba(0, 0, 0, 0);
 	background-image:
 		linear-gradient(to bottom,
@@ -213,6 +230,7 @@ h2 {
 			var(--cf-bg2) 0
 		);
 	background-repeat: no-repeat;
+	/* display: none; */
 }
 
 .spinner--theme-sydcss[data-has-crashed] .spinner__overlay {
@@ -241,6 +259,7 @@ h2 {
 	border-radius: 0.25em;
 	box-sizing: border-box;
 	z-index: -1;
+	/* display: none; */
 }
 
 .spinner--theme-sydcss[data-has-crashed] .spinner__border {
@@ -309,4 +328,22 @@ h2 {
 
 .spinner--theme-debug .spinner__item.disabled {
 	background-color: lightgrey;
+}
+
+
+/*** INTRO SCREEN ***/
+
+.intro-screen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	transition: transform 3s;
+}
+
+.intro-screen.fade-out {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 3s;
 }
