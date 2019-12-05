@@ -18,6 +18,7 @@ body {
 	box-sizing: border-box;
 	color: var(--colour-foreground);
 	margin: 0;
+	perspective: 2000px;
 }
 
 .main {
