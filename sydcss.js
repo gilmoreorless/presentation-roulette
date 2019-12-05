@@ -1,17 +1,18 @@
 /*** CONFIG ***/
 
 const topics = [
-	'Accessibility',
-	'IE was awesome because…',
-	'Custom Properties',
 	'⚡️ Speaker’s choice ✨',
-	'3 things you didn’t know about…',
-	'Stacking Context',
+	'IE was awesome because…',
+	'Utility-first CSS',
 	'Who needs CSS anyway?',
 	'I wish CSS had…',
 	'Houdini',
+	'⚡️ Audience choice ☠️',
+	'3 things you didn’t know about…',
 	'CSS in email',
-	'Performance',
+	'Performance and jank',
+	'CSS annoys me because…',
+	'Units in CSS',
 ];
 
 const minSpinDuration = 10000;

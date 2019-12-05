@@ -72,7 +72,7 @@ h2 {
 }
 
 .spinner__list-container {
-	perspective: 500px;
+	perspective: 600px;
 	perspective-origin: calc(var(--spinner-width) / 2) 50%;
 }
 
@@ -128,7 +128,7 @@ h2 {
 
 .spinner--theme-sydcss {
 	--spinner-width: 500px;
-	--spinner-height: 270px;
+	--spinner-height: 280px;
 	--clip-path-w: calc(var(--spinner-width) * 0.6);
 	--clip-path-h: calc(var(--spinner-height) * 1);
 	--colour-border: hsl(13, 77%, 45%);
@@ -159,21 +159,25 @@ h2 {
 }
 
 .spinner--theme-sydcss .spinner__item {
-	background-color: #FB4C32;
+	background-color: hsla(329, 74%, 45%, 1);
 	color: hsla(198, 100%, 95%, 1);
 	padding: 0.5em 0.85em;
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+2) {
-	background-color: #1FC754;
+	background-color: hsla(139, 63%, 40%, 1);
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+3) {
-	background-color: #E41481;
+	background-color: hsla(8, 76%, 53%, 1);
 }
 
 .spinner--theme-sydcss .spinner__item:nth-child(4n+4) {
-	background-color: #9B1FD7;
+	background-color: hsla(280, 65%, 42%, 1);
+}
+
+.spinner--theme-sydcss .spinner__item:nth-child(7n) {
+	background-color: hsla(8, 20%, 14%, 1);
 }
 
 .spinner--theme-sydcss[data-has-crashed] .spinner__item {
@@ -194,22 +198,22 @@ h2 {
 
 	--cf-bg1: var(--colour-background);
 	--cf-bg2: var(--colour-border);
-	--cf-dark: rgba(0, 0, 0, 0.8);
-	--cf-light: rgba(0, 0, 0, 0.3);
+	--cf-dark: rgba(0, 0, 0, 0.9);
+	--cf-light: rgba(0, 0, 0, 0.4);
 	--cf-clear: rgba(0, 0, 0, 0);
 	background-image:
 		linear-gradient(to bottom,
-			var(--cf-bg2) 7%,
+			var(--cf-bg2) 10%,
 			var(--cf-bg1) 0,
-			var(--cf-bg1) 8%,
+			var(--cf-bg1) 11%,
 			var(--cf-dark) 0,
 			var(--cf-light) 20%,
 			var(--cf-clear) 40%,
 			var(--cf-clear) 60%,
 			var(--cf-light) 80%,
-			var(--cf-dark) 92%,
+			var(--cf-dark) 90%,
 			var(--cf-bg1) 0,
-			var(--cf-bg1) 93%,
+			var(--cf-bg1) 91%,
 			var(--cf-bg2) 0
 		);
 	background-repeat: no-repeat;
