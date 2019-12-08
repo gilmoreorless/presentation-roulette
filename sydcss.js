@@ -665,6 +665,8 @@ function spinToRandomTopic() {
 const mainContents = document.getElementById('main-contents');
 const spinButton = document.getElementById('select-topic');
 spinButton.addEventListener('click', spinToRandomTopic, false);
+const introButton = document.getElementById('show-intro');
+introButton.addEventListener('click', showIntroScreen, false);
 
 const keyActions = {
 	' ': 'select',

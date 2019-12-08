@@ -68,6 +68,11 @@ h2 {
 	flex: 1;
 }
 
+.controls__button {
+	display: flex;
+	flex-direction: row;
+}
+
 .big-button {
 	--button-size: 5rem;
 
@@ -123,7 +128,7 @@ h2 {
 	background-image: radial-gradient(at 48% 48%, hsl(var(--hue),100%,70%), hsl(var(--hue),100%,50%) 55%, hsl(var(--hue),100%,0%));
 	box-shadow: 1px 3px 10px 2px rgba(128,128,128,0.3);
 	font-size: 2em;
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 
 .big-button--theme-sydcss:focus {
