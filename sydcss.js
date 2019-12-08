@@ -63,6 +63,12 @@ function selectTopic() {
 	return topic;
 }
 
+function resetTopics() {
+	console.log('--RESET TOPICS--');
+	remainingTopics = new Set(topics);
+	chosenTopics = [];
+}
+
 
 
 
@@ -235,6 +241,7 @@ class Spinner {
 		this.root = document.querySelector(selector);
 		this.axis = 'x';
 		this.effectIndex = -1;
+		this.isConstantlySpinning = false;
 		this.setup(items);
 	}
 
@@ -296,6 +303,10 @@ class Spinner {
 		return spinnerEffects[this.effectIndex];
 	}
 
+	resetEffects() {
+		this.effectIndex = -1;
+	}
+
 	spinTo(idx) {
 		return new Promise(resolve => {
 			const oldItemAngle = this.selectedIndex / this.itemNodes.length;
@@ -338,11 +349,20 @@ class Spinner {
 	}
 
 	spinConstantly() {
-		delete this.root.dataset.hasArrow; 
+		delete this.root.dataset.hasArrow;
 		this.listNode.animate(
 			{ transform: [rotation(this.axis, 0), rotation(this.axis, 1)] },
 			{ duration: constantSpinDuration, easing: 'linear', iterations: Infinity }
 		);
+		this.isConstantlySpinning = true;
+	}
+
+	stopConstantSpin() {
+		this.isConstantlySpinning = false;
+		const anims = this.listNode.getAnimations();
+		if (anims.length) {
+			anims[0].cancel();
+		}
 	}
 
 	setDisabled(idx) {
@@ -443,7 +463,21 @@ const keyActions = {
 	Enter: 'select',
 	b: 'slowSpin',
 	ArrowDown: 'slowSpin',
+	r: 'resetTopics',
+	PageUp: 'resetTopics',
 };
+
+/**
+PRESENTER REMOTE:
+      {Play}
+        F5
+
+{Back}      {Forward}
+PageUp      PageDown
+
+      {Stop}
+        b
+*/
 
 document.addEventListener('keydown', (ev) => {
 	console.log('[keydown]', ev.keyCode, ev.key, keyActions[ev.key]);
@@ -456,7 +490,15 @@ document.addEventListener('keydown', (ev) => {
 			}, 200);
 			break;
 		case 'slowSpin':
-			spinnerTopic.spinConstantly();
+			if (spinnerTopic.isConstantlySpinning) {
+				spinnerTopic.stopConstantSpin();
+			} else {
+				spinnerTopic.spinConstantly();
+			}
+			break;
+		case 'resetTopics':
+			resetTopics();
+			spinnerTopic.resetEffects();
 			break;
 	}
 }, false);
