@@ -24,6 +24,7 @@ const effectFiles = {
 	'spin-reverse': 'sounds/roulette-reverse.mp3',
 	ding: 'sounds/chime.mp3',
 	crash: 'sounds/crash.mp3',
+	intro: 'sounds/intro.mp3',
 };
 
 
@@ -429,6 +430,213 @@ const soundEffects = new SoundEffects(effectFiles);
 
 
 
+
+/*** INTRO SCREEN ***/
+
+
+
+const introCanvas = document.getElementById('intro');
+let W, H, ctx;
+
+let xyOverflow = 0.4; // percentage of W or H
+let totalTrailTime = 4000; // milliseconds
+let trailFader = 0.05; // opacity
+let title = 'SYDCSS';
+
+function lerp(start, end, perc) {
+	return start + (end - start) * perc;
+}
+
+function lerpStep(start, end, perc, steps) {
+	let percPerStep = 1 / steps;
+	let stepNum = Math.floor(perc / percPerStep);
+	return lerp(start, end, stepNum * percPerStep);
+}
+
+async function wait(time) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, time);
+	});
+}
+
+async function showIntroScreen() {
+	// Reset everything to the right state
+	mainContents.className = 'main hidden';
+	introCanvas.className = 'intro-screen';
+	introCanvas.style.transform = '';
+
+	W = introCanvas.width = window.innerWidth;
+	H = introCanvas.height = window.innerHeight;
+	ctx = introCanvas.getContext('2d');
+	ctx.font = '7rem Monoton';
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillStyle = '#fff';
+	ctx.lineWidth = 15;
+	ctx.lineCap = 'round';
+	ctx.lineJoin = 'round';
+
+	// Start the show
+	let sound = soundEffects.play('intro');
+	await wait(2000);
+	let props = await introTextAppear();
+	introCleanText(props);
+	await wait(2000);
+	await introShrinkCanvas();
+	introShowContents();
+}
+
+async function introTextAppear() {
+	return new Promise((resolve) => {
+		let duration = totalTrailTime;
+		let startAngle = Math.PI; // radians
+		let endAngle = 0;
+		let startPos = [W * 2.5, 0 - H * xyOverflow];
+		let endPos = [W / 2, H / 2];
+		let startScale = 0.1;
+		let endScale = 1;
+		let startHue = 180;
+		let endHue = 760;
+
+		let startTime;
+		let lastTrailColour;
+		let totalTrailFades = 1 / (trailFader / 2);
+		let trailFadeCount = 0;
+		ctx.save();
+
+		function doFadeOut() {
+			ctx.save();
+			ctx.shadowBlur = 0;
+			ctx.fillStyle = `rgba(0, 0, 0, ${trailFader})`;
+			ctx.fillRect(0, 0, W, H);
+			ctx.restore();
+		}
+
+		function doLoop(time) {
+			if (!startTime) startTime = time;
+
+			let rawPerc = (time - startTime) / duration;
+			let perc = Math.min(rawPerc, 1);
+			let isMoving = rawPerc <= 1;
+			let isFading = trailFadeCount < totalTrailFades;
+			if (isMoving || isFading) {
+				requestAnimationFrame(doLoop);
+			} else {
+				return resolve({
+					colour: lastTrailColour,
+				});
+			}
+
+			// End-of-movement trail fade-out
+			if (!isMoving) {
+				// Initiate new positioning
+				if (trailFadeCount == 0) {
+					ctx.restore();
+					ctx.save();
+					ctx.shadowColor = lastTrailColour;
+					ctx.strokeStyle = lastTrailColour;
+					ctx.shadowBlur = 5;
+				}
+				trailFadeCount++;
+
+				// Fade out previous images
+				doFadeOut();
+
+				// Re-add text above the fade-out
+				let x = W / 2, y = H / 2;
+				ctx.strokeText(title, x, y);
+				ctx.fillText(title, x, y);
+
+				if (!isFading) {
+					ctx.restore();
+				}
+				return;
+			}
+
+			// Re-add the previous trail to cover the white text
+			ctx.strokeText(title, 0, 0);
+			ctx.restore();
+
+			// Calculate new position
+			let angle = lerp(startAngle, endAngle, perc);
+			let x = lerp(startPos[0], endPos[0], perc);
+			let y = lerp(startPos[1], endPos[1], perc);
+			let scale = lerp(startScale, endScale, perc);
+			let hue = lerpStep(startHue, endHue, perc, 6);
+			let colour = `hsl(${hue % 360}, 50%, 50%)`;
+
+			// Fade out previous images
+			doFadeOut();
+
+			// Move to new location/rotation
+			ctx.save();
+			ctx.scale(scale, scale);
+			ctx.translate(x, y);
+			ctx.rotate(angle);
+
+			// Add trail
+			lastTrailColour = colour;
+			ctx.shadowColor = colour;
+			ctx.strokeStyle = colour;
+			ctx.shadowBlur = 40;
+			ctx.strokeText(title, 0, 0);
+
+			// Add text
+			ctx.shadowBlur = 0;
+			ctx.fillText(title, 0, 0);
+		}
+
+		requestAnimationFrame(doLoop);
+	});
+}
+
+function introCleanText({ colour }) {
+	ctx.clearRect(0, 0, W, H);
+
+	ctx.save();
+	ctx.translate(W / 2, H / 2);
+	ctx.shadowColor = colour;
+	ctx.strokeStyle = colour;
+	ctx.shadowBlur = 15;
+	ctx.lineWidth = 20;
+	ctx.strokeText(title, 0, 0);
+	ctx.fillText(title, 0, 0);
+	ctx.restore();
+}
+
+async function introShrinkCanvas() {
+	return new Promise((resolve) => {
+		let textSizeCanvas = ctx.measureText(title);
+		let textSizeHtml = document.getElementById('title-inner').getBoundingClientRect();
+		let scale = textSizeHtml.width / textSizeCanvas.width;
+
+		let yCanvas = H / 2;
+		let baseline = textSizeCanvas.fontBoundingBoxAscent / (textSizeCanvas.fontBoundingBoxAscent + textSizeCanvas.fontBoundingBoxDescent);
+		let yHtml = textSizeHtml.y + textSizeHtml.height * baseline;
+		let translate = yHtml - yCanvas;
+
+		function transformEnd() {
+			introCanvas.removeEventListener('transitionend', transformEnd);
+			resolve();
+		}
+		introCanvas.addEventListener('transitionend', transformEnd);
+		introCanvas.style.transform = `
+			translateY(${translate}px)
+			scale(${scale})
+			rotateX(1turn)
+			`;
+	});
+}
+
+function introShowContents() {
+	introCanvas.classList.add('fade-out');
+	mainContents.classList.remove('hidden');
+	mainContents.classList.add('fade-in');
+}
+
+
+
+
 /*** INTERACTIONS ***/
 
 
@@ -454,6 +662,7 @@ function spinToRandomTopic() {
 	}
 }
 
+const mainContents = document.getElementById('main-contents');
 const spinButton = document.getElementById('select-topic');
 spinButton.addEventListener('click', spinToRandomTopic, false);
 
@@ -463,8 +672,11 @@ const keyActions = {
 	Enter: 'select',
 	b: 'slowSpin',
 	ArrowDown: 'slowSpin',
+	i: 'intro',
+	PageDown: 'intro',
 	r: 'resetTopics',
 	PageUp: 'resetTopics',
+	s: 'showContent', // debug only
 };
 
 /**
@@ -496,9 +708,15 @@ document.addEventListener('keydown', (ev) => {
 				spinnerTopic.spinConstantly();
 			}
 			break;
+		case 'intro':
+			showIntroScreen();
+			break;
 		case 'resetTopics':
 			resetTopics();
 			spinnerTopic.resetEffects();
+			break;
+		case 'showContent':
+			mainContents.classList.remove('hidden');
 			break;
 	}
 }, false);

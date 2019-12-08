@@ -2,7 +2,7 @@
 	--spinner-width: 300px;
 	--spinner-height: 100px;
 
-	--colour-background: hsl(18, 97%, 5%);
+	--colour-background: black;
 	--colour-foreground: white;
 }
 
@@ -16,10 +16,24 @@ body {
 	background-color: var(--colour-background);
 	box-sizing: border-box;
 	color: var(--colour-foreground);
+	margin: 0;
+	perspective: 2000px;
+}
+
+.main {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
 	margin: 0 1rem;
+}
+
+.main.hidden {
+	opacity: 0;
+}
+
+.main.fade-in {
+	opacity: 1;
+	transition: opacity 3s;
 }
 
 header {
@@ -313,4 +327,22 @@ h2 {
 
 .spinner--theme-debug .spinner__item.disabled {
 	background-color: lightgrey;
+}
+
+
+/*** INTRO SCREEN ***/
+
+.intro-screen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	transition: transform 3s;
+}
+
+.intro-screen.fade-out {
+	opacity: 0;
+	transition: opacity 3s;
 }

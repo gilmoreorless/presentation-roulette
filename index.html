@@ -8,23 +8,26 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
 </head>
 <body>
-	<header>
-		<h1>SydCSS</h1>
-		<h2>Choose Your Topic</h2>
-	</header>
+	<div id="main-contents" class="main hidden">
+		<header>
+			<h1><span id="title-inner">SydCSS</span></h1>
+			<h2>Choose Your Topic</h2>
+		</header>
 
-	<section class="controls">
-		<div class="controls__spinner">
-			<div class="spinner spinner--theme-sydcss" id="spinner-topic">
-				<svg viewBox="-0.5 -0.5 9 9" class="spinner__arrow">
-					<path class="spinner__arrow--shape" d="M0,4 L4,0 3,3 8,2 8,6 3,5 4,8 z" />
-				</svg>
+		<section class="controls">
+			<div class="controls__spinner">
+				<div class="spinner spinner--theme-sydcss" id="spinner-topic">
+					<svg viewBox="-0.5 -0.5 9 9" class="spinner__arrow">
+						<path class="spinner__arrow--shape" d="M0,4 L4,0 3,3 8,2 8,6 3,5 4,8 z" />
+					</svg>
+				</div>
 			</div>
-		</div>
-		<div class="controls__button">
-			<button type="button" class="big-button big-button--theme-sydcss" id="select-topic">Spin the wheel</button>
-		</div>
-	</section>
+			<div class="controls__button">
+				<button type="button" class="big-button big-button--theme-sydcss" id="select-topic">Spin the wheel</button>
+			</div>
+		</section>
+	</div>
+	<canvas id="intro" class="intro-screen"></canvas>
 
 	<script src="sydcss.js"></script>
 </body>
