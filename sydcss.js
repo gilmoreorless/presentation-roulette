@@ -115,6 +115,64 @@ const spinnerEffects = [
 		},
 	},
 
+	{
+		name: 'wobble',
+		start: ({ node, axis, start, end, duration, itemCount }) => {
+			/*
+			- Many rotations to item
+			- Back to previous item
+			- Forward to almost item
+			- Back to boundary point
+			- Pause on boundary point
+			- Snap to item
+			*/
+
+			let itemDistance = 1 / itemCount;
+			let timeUnit = 0.07; // As percentage of total duration
+
+			let wobbles = [
+				{ point: end - itemDistance * 0.1 },
+				{ point: end - itemDistance * 1.4, timeUnits: 2 },
+				{ point: end - itemDistance * 0.3, timeUnits: 2 },
+				{ point: end - itemDistance * 0.7, timeUnits: 1.5 },
+				{ point: end - itemDistance * 0.5, timeUnits: 3, easing: 'ease-in-out' },
+				{ point: end, timeUnits: 1, easing: 'cubic-bezier(0.69, 0.11, 0.98, 0.13)' },
+			];
+
+			let totalTimeUnits = wobbles.reduce((memo, { timeUnits }) => memo + timeUnits || 0, 0);
+			let totalWobbleTime = timeUnit * totalTimeUnits;
+			let wobbleStartOffset = 1 - totalWobbleTime;
+			let keyframes = [
+				{ transform: rotation(axis, start), easing: 'cubic-bezier(0.11, 0.69, 0.13, 0.98)' }
+			];
+			let lastOffset = wobbleStartOffset;
+			wobbles.forEach((frame, i) => {
+				let nextFrame = wobbles[i + 1];
+				let easing = nextFrame && nextFrame.easing || 'cubic-bezier(0.63, 0, 0.37, 1)';
+				let offset = lastOffset + timeUnit * (frame.timeUnits || 0);
+				let props = {
+					transform: rotation(axis, frame.point),
+					offset,
+					easing,
+				};
+				keyframes.push(props);
+				lastOffset = offset;
+			});
+
+			return {
+				animation: node.animate(
+					keyframes,
+					{ duration: duration + duration * totalWobbleTime, fill: 'forwards' }
+				),
+				sound: soundEffects.play('spin'),
+			};
+		},
+		end: ({ animation, sound, showArrow }) => {
+			sound.stop();
+			showArrow();
+		},
+	},
+
 // 	{
 // 		name: 'halt',
 // 		start: ({ node, axis, start, end, duration, itemCount }) => {
