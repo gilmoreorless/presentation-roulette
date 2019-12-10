@@ -611,7 +611,10 @@ async function introShrinkCanvas() {
 		let scale = textSizeHtml.width / textSizeCanvas.width;
 
 		let yCanvas = H / 2;
-		let baseline = textSizeCanvas.fontBoundingBoxAscent / (textSizeCanvas.fontBoundingBoxAscent + textSizeCanvas.fontBoundingBoxDescent);
+		let baseline = 0.58; // Rough approximation; it's better calculated below if the browser supports it
+		if (textSizeCanvas.fontBoundingBoxAscent) {
+			baseline = textSizeCanvas.fontBoundingBoxAscent / (textSizeCanvas.fontBoundingBoxAscent + textSizeCanvas.fontBoundingBoxDescent);
+		}
 		let yHtml = textSizeHtml.y + textSizeHtml.height * baseline;
 		let translate = yHtml - yCanvas;
 
