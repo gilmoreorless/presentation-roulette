@@ -10,8 +10,16 @@ This repo contains the code for the spinning **Wheel of Talks™** used on the n
 
 Try it out at https://gilmoreorless.github.io/presentation-roulette/
 
-Wheel spinning is initiated by clicking the big red button, or by pressing the <kbd>Space</kbd> or <kbd>Enter</kbd> keys.
-An extra “preview” mode (a slow, constant spin) can be activated by pressing the down arrow (or <kbd>b</kbd>, due to the specifics of my presentation remote control).
+Controls:
+
+- Wheel spinning is initiated by clicking the big red button, or by pressing the <kbd>Space</kbd> or <kbd>Enter</kbd> keys.
+- An extra “preview” mode (a slow, constant spin) can be activated by pressing the down arrow (or <kbd>b</kbd>, due to the specifics of my presentation remote control).
+- A treat added for the second SydCSS “Wheel of Talks” event in 2019: A cheesy ’80s-inspired intro animation (complete with theme tune) can be shown by clicking the relevant big red button, or by pressing the <kbd>i</kbd> or <kbd>PageDown</kbd> keys.
+- To reset the animations and topic selection, press the <kbd>r</kbd> or <kbd>PageUp</kbd> keys.
+
+## How it was built, and why
+
+All the details can be found in my blog post: [SydCSS Wheel of Talks](https://shoehornwithteeth.com/ramblings/2019/03/sydcss-wheel-of-talks/).
 
 ## Caveats / warnings
 
@@ -22,9 +30,9 @@ However, because it was written for a one-off presentation to be run on a single
 
 This code is mainly provided as a reference for those who want to see how it was built, and **is not intended to be instantly-reusable in its current state**.
 
-The JS code did start off quite small, but grew and grew as the scope crept ever onwards. The git history shows the evolution of the idea over the weeks leading up to the event.
+The JS code did start off quite small, but grew and grew as the scope crept ever onwards. The git history shows the evolution of the idea over the weeks leading up to the event. And then we did the event again a year later, so the ideas kept coming.
 
-### For those who were there on the night
+### For those who were there on the first night (2018)
 
 The animations were rigged to happen in a specific order, but the talk selections were not.
 
