@@ -2,15 +2,15 @@
 
 const topics = [
 	'⚡️ Speaker’s choice ✨',
-	'IE was awesome because…',
-	'Utility-first CSS',
+	'I love !important because…',
+	'unset initial inherit – what?',
 	'Who needs CSS anyway?',
 	'I wish CSS had…',
 	'Houdini',
 	'⚡️ Audience choice ☠️',
 	'3 things you didn’t know about…',
 	'CSS in email',
-	'Performance and jank',
+	'Why is my Webpack grumbling?',
 	'CSS annoys me because…',
 	'Units in CSS',
 ];
