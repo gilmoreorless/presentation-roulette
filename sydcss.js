@@ -682,6 +682,7 @@ const keyActions = {
 	r: 'resetTopics',
 	PageUp: 'resetTopics',
 	h: 'toggleContent',
+	s: 'toggleSocialDistancing',
 };
 
 /**
@@ -722,6 +723,9 @@ document.addEventListener('keydown', (ev) => {
 			break;
 		case 'toggleContent':
 			mainContents.classList.toggle('hidden');
+			break;
+		case 'toggleSocialDistancing':
+			mainContents.classList.toggle('mask-it-up');
 			break;
 	}
 }, false);

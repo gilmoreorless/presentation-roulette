@@ -4,6 +4,8 @@
 
 	--colour-background: black;
 	--colour-foreground: white;
+
+	--social-timing: 1s;
 }
 
 html {
@@ -350,4 +352,35 @@ h2 {
 .intro-screen.fade-out {
 	opacity: 0;
 	transition: opacity 3s;
+}
+
+
+/*** EXTRA JOKES ***/
+
+.face-mask {
+	position: absolute;
+	width: calc(var(--spinner-width) * 1.32);
+	transform: translate(-50%, -50%);
+	z-index: 1;
+	opacity: 0;
+	transition: opacity var(--social-timing);
+}
+
+h1, h2 {
+	transition-duration: var(--social-timing);
+	transition-property: letter-spacing, padding-left;
+}
+
+.mask-it-up h1 {
+	letter-spacing: 1.5em;
+	padding-left: 1.5em;
+}
+
+.mask-it-up h2 {
+	letter-spacing: 0.75em;
+	padding-left: 0.75em;
+}
+
+.mask-it-up .face-mask {
+	opacity: 1;
 }
