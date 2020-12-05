@@ -27,13 +27,13 @@ body {
 	margin: 0 1rem;
 }
 
-.main.hidden {
-	opacity: 0;
-}
-
 .main.fade-in {
 	opacity: 1;
 	transition: opacity 3s;
+}
+
+.main.hidden {
+	opacity: 0;
 }
 
 header {

@@ -681,7 +681,7 @@ const keyActions = {
 	PageDown: 'intro',
 	r: 'resetTopics',
 	PageUp: 'resetTopics',
-	s: 'showContent', // debug only
+	h: 'toggleContent',
 };
 
 /**
@@ -720,8 +720,8 @@ document.addEventListener('keydown', (ev) => {
 			resetTopics();
 			spinnerTopic.resetEffects();
 			break;
-		case 'showContent':
-			mainContents.classList.remove('hidden');
+		case 'toggleContent':
+			mainContents.classList.toggle('hidden');
 			break;
 	}
 }, false);
