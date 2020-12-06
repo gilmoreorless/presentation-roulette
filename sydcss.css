@@ -384,3 +384,8 @@ h1, h2 {
 .mask-it-up .face-mask {
 	opacity: 1;
 }
+
+/* Hide the "Show Intro" button for live presentations */
+#show-intro {
+	display: none;
+}
